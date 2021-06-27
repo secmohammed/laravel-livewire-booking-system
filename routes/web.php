@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Livewire\ShowBooking;
+use App\Http\Livewire\CreateBooking;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +22,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
-Route::get('bookings/create', BookingController::class);
+Route::get('bookings/create', CreateBooking::class);
+Route::get('bookings/{appointment:uuid}', ShowBooking::class)->name('bookings.show');
 require __DIR__ . '/auth.php';

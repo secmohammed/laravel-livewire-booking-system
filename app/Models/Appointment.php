@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Appointment extends Model
@@ -17,6 +18,7 @@ class Appointment extends Model
         'date' => 'datetime',
         'end_time' => 'datetime',
         'start_time' => 'datetime',
+        'cancelled_at' => 'datetime',
     ];
 
     /**
@@ -30,6 +32,7 @@ class Appointment extends Model
         'employee_id',
         'service_id',
         'client_email',
+        'cancelled_at',
     ];
 
     public static function booted()
@@ -46,6 +49,19 @@ class Appointment extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function isCancelled()
+    {
+        return !is_null($this->cancelled_at);
+    }
+
+    /**
+     * @param Builder $builder
+     */
+    public function scopeNotCancelled(Builder $builder)
+    {
+        $builder->whereNull('cancelled_at');
     }
 
     /**
